@@ -1,5 +1,37 @@
 import streamlit as st
 import pandas as pd
+import streamlit as st
+
+def login():
+    st.title("Login")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if (
+            username == st.secrets["USERNAME"]
+            and password == st.secrets["PASSWORD"]
+        ):
+            st.session_state["authenticated"] = True
+            st.success("Login successful!")
+            st.rerun()
+        else:
+            st.error("Invalid username or password")
+
+# Initialize authentication state
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+# If not logged in, show login page
+if not st.session_state["authenticated"]:
+    login()
+    st.stop()
+
+st.title("My Main App")
+st.write("You are logged in 🎉")
+
+
 from api import create_visit
 
 st.set_page_config(
@@ -183,4 +215,4 @@ if uploaded_file is not None:
     except Exception as e:
 
         st.error(f"Error reading Excel: {e}")
-        
+      
